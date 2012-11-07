@@ -1,0 +1,21 @@
+<div xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:py="http://genshi.edgewall.org/" py:strip="True" >
+    <form name="message_reply_form" action="/chat/submit_reply" method="POST">
+        <div style="height:410px;overflow:auto;">
+            <py:for each="message in messages">
+                <div class="row-fluid" style="border: 1px solid grey;background-color: aliceblue;">
+                    <div>                
+                        <div style="margin-left: 10px;">${message['msgtext']}</div>
+                    </div>
+                    <br />
+                    <div align="right" style="margin-right: 10px;color: gray;">${message['from']} posted on ${message['mtime']}</div>
+                </div>
+            </py:for>
+        </div>
+        <div id="submitreply" style="${display}">
+            <input type="hidden" name="mthreadid" id="mthreadid" value="${threadid}"/>
+            <input type="text" name="replymessage" id="replymessage" placeholder="Enter message here" style="width: 230px;height: 50px;margin-left: 10px"/>
+            <button class="btn-large btn-primary">Send Message</button>
+        </div>
+    </form>
+</div>

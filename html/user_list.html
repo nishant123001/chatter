@@ -1,0 +1,19 @@
+<div xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:py="http://genshi.edgewall.org/" py:strip="True" >
+    <form name="user_chat_form" action="/chat/submit_chat" method="POST">
+        <div style="height:410px;overflow:auto;">
+            <py:for each="user in users">
+                <div class="row-fluid">
+                    <input type="checkbox" name="${user['id']}" class="usercol" style="margin: 4px;"/><span style="margin-left: 10px; overflow: hidden">${user['name']}</span>
+                    <br />
+                    <br />
+                </div>
+            </py:for>
+        </div>
+        <div>
+            <input type="text" name="message" placeholder="Enter message here" id="message_many" style="width: 230px;height: 50px;margin-left: 10px"/>
+            <button class="btn-large btn-primary">Send Message</button>
+        </div>
+    </form>
+</div>
+

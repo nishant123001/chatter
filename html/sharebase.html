@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:py="http://genshi.edgewall.org/"
+	  xmlns:xi="http://www.w3.org/2001/XInclude">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>inSync Share</title>
+        <link rel="shortcut icon" href="${vroot}/images/favicon.ico"/>
+        <!-- Stylesheets -->
+        <link rel="stylesheet" href="${vroot}/styles/structure.css" type="text/css" />
+        <link rel="stylesheet" href="${vroot}/styles/share.css" type="text/css" />
+        <link rel="stylesheet" href="${vroot}/styles/modal-box.css" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="${vroot}/styles/jquery.ui.all.css" />
+
+        <link href='${vroot}/styles/fonts.css' rel='stylesheet' type='text/css' />
+        
+        <!-- Javascript -->
+        <script type="text/javascript" src="${vroot}/js/jquery-1.4.2.js?v=${rev}"/>
+		<script type="text/javascript" src="${vroot}/js/druva.js?v=${rev}"/>
+		<script type="text/javascript" src="${vroot}/js/tools.expose-1.0.5.js?v=${rev}"/>
+		<script type="text/javascript" src="${vroot}/js/tools.overlay-1.1.2.js?v=${rev}"/>
+		<script type="text/javascript" src="${vroot}/js/tooltip.js?v=${rev}"/>
+		<script type="text/javascript" src="${vroot}/js/tabs.js?v=${rev}" ></script>
+		<script type="text/javascript" src="${vroot}/js/jquery.tmpl.js?v=${rev}" ></script>
+        <script type="text/javascript" src="${vroot}/js/share.js"></script>
+        <script type="text/javascript" src="${vroot}/js/jquery.zclip.js"></script>
+        <script type="text/javascript" src="${vroot}/js/jquery.ui.core.js"></script>
+		<script type="text/javascript" src="${vroot}/js/jquery.ui.widget.js"></script>
+		<script type="text/javascript" src="${vroot}/js/jquery.ui.button.js"></script>
+		<script type="text/javascript" src="${vroot}/js/jquery.ui.position.js"></script>
+        <script type="text/javascript" src="${vroot}/js/jquery.ui.autocomplete.js"></script>
+		<!-- include scripts from individual templates now -->
+        <py:match path="incscript">
+            <script type="text/javascript" src="${select('@src')}" />
+        </py:match>
+	
+		<script type="text/javascript">
+			drp_msg_flag = '${msg_flag}';
+			drp_msg = '${msg}';
+			jQuery(document).ready(function(){
+				if (!jQuery.browser.msie) {
+					var windowHeight = jQuery(window).height();
+                    var shareContentHeight = windowHeight - (jQuery('div.share-content').offset().top + 20);
+                    jQuery('div.share-content').css({'height':shareContentHeight + 'px','overflow':'hidden'});
+                    jQuery('div#sidebar').css({'height':shareContentHeight + 'px','overflow':'hidden'}); 
+                    jQuery('div.profiles-table-container').css({'max-height':(shareContentHeight-150) + 'px', 'overflow':'auto'});
+			    }
+				jQuery('#sidebar .inactive').show();
+				jQuery('#sidebar .active').hide();
+				jQuery('.${optype}' + '-menu').hide();
+				jQuery('.${optype}' + '-menu-active').show();
+				DRP.Init('${vroot}');
+				DRP.Share.init();
+				
+			});
+		</script>
+		<script id="collaborator" type="text/x-jquery-tmpl">
+			<tr class="collaborator">
+				<input type="hidden" class="uid" value="{{= id}}" />
+				<td class="col1 name">{{= name}}</td>
+				<td class="col2 mail">{{= mail}}</td>
+				<td class="col3 created">{{= createdon}}</td>
+				<td class="col4 field switch">
+                {{if owner}}
+                    <input type="hidden" class="perm" value="1" />
+                    owner
+                {{else}}
+				    {{if perms}}
+        			    <input type="hidden" class="perm" value="1" />
+					    <label class="cb-enable selected"><span>Edit</span></label>
+					    <label class="cb-disable"><span>View</span></label>
+    			    {{else}}
+					    <input type="hidden" class="perm" value="0" />
+					    <label class="cb-enable"><span>Edit</span></label>
+					    <label class="cb-disable selected"><span>View</span></label>
+				    {{/if}}
+                {{/if}}
+				</td>
+                {{if owner}}
+                    <td class="col5">&nbsp;</td>
+                {{else}}
+                    <td class="col5 delete-collaborator"><img src="${vroot}/images/delete-collaborator.png" /></td>
+                {{/if}}
+			</tr>
+		</script>
+		<script id="versions" type="text/x-jquery-tmpl">
+			<tr class="version">
+				<td class="col1 mtime">{{= mtime}}
+				<span class="hide details" ver="{{= ver}}" ></span>
+				</td>
+				<td class="col2 cuser">{{= cuser}}</td>
+				<td class="col3 size">{{= size}}</td>
+			</tr>
+		</script>
+        
+    </head>
+
+    <body>
+		<div class="top-menu">
+        	<div class="top-menu-container">
+                <div class="main-logo">
+                    <img src="${vroot}/images/inSync-icon-30x30.png"/>
+                </div>
+                <div class="main-menu">
+                    <a py:if="perm['syncshare_view']" href="${vroot}/share/dashboard">Dashboard</a>
+                    <a py:if="perm['syncshare_view']" href="${vroot}/share/allbrowser" class="active">Share</a>
+                    <a py:if="perm['webrestore_view']" href="${vroot}/webrestore/list_devices">Restore</a>
+                </div>
+                <div class="side-menu">
+                    <ul class="myMenu"> 
+                        <li id="topmenu_li"><a href="javascript:;" id="topmenu_username">${session.get('user')['name']} </a>
+                        <span class="hide" id="LoggedInUsersMail">${session.get('user')['mail']}</span> 
+                            <ul id="topmenu_submenu"> 
+                                <li class="item1"><a href="${weblink}">Get inSync</a></li> 
+                                <li class="item2"><a href="${vroot}/dologout">Logout</a></li> 
+                            </ul> 
+                        </li> 
+                    </ul>
+                </div>
+        	</div>
+        </div>
+        
+		<div class="main-content">
+        	<div class="main-content-actual">
+            	<div class="main-heading">
+                	<div class="main-heading-breadcrumb">
+                		<div class="main-heading-breadcrumb-content">Share</div>
+                    </div>
+                	<div class="main-heading-searchbar hide">
+						<input type="text" name="search-box" placeholder="Search inSync"/>
+                    </div>
+                </div>
+            	<div class="share-content">
+                
+                	<div class="share-content-sidebar" id="sidebar">
+                    
+                    	<div class="all-content-menu inactive"><a href="${vroot}/share/allbrowser">All Content</a></div>
+                    	<div class="all-content-menu-active active"><img class="menu-icon" src="${vroot}/images/all-content-menu.png" /><a href="${vroot}/share/allbrowser">All Content</a><img class="menu-arrow" src="${vroot}/images/share-menu-selected.png" /></div>
+                        
+                    	<div class="shared-menu inactive"><a href="${vroot}/share/sharedcontent">Shared Content</a></div>
+                        <div class="shared-menu-active active"><img class="menu-icon" src="${vroot}/images/share-menu-active.png" /><a href="${vroot}/share/sharedcontent">Shared Content</a><img class="menu-arrow" src="${vroot}/images/share-menu-selected.png" /></div>
+                        
+                    	<div class="links-menu"><a href="${vroot}/share/listlinks">Links</a></div>
+                    	<div class="links-menu-active"><img class="menu-icon" src="${vroot}/images/links-menu-active.png" /><a href="${vroot}/share/listlinks">Links</a><img class="menu-arrow" src="${vroot}/images/share-menu-selected.png" /></div>
+                        
+                        <div class="activities-menu"><a href="${vroot}/share/activities">Activities</a></div>
+                    	<div class="activities-menu-active"><img class="menu-icon" src="${vroot}/images/activities-menu-active.png" /><a href="${vroot}/share/activities">Activities</a><img class="menu-arrow" src="${vroot}/images/share-menu-selected.png" /></div>
+                    </div>
+                    
+                	<div class="share-content-main">
+                    	<py:for each="page in page_list">
+                            <div py:choose="page.endswith('.html')" py:strip="True">
+                                <span py:when="True" py:strip="True">
+                                <xi:include href="${page}" />
+                                </span> <span py:otherwise="" py:replace="Markup(page)" />
+                            </div>
+                        </py:for>
+                    	
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+            
+        </div>
+        <xi:include href="wait_dlg.html"></xi:include>
+        
+		<div id="boxes">
+			<!-- Start of Login Dialog -->
+			<div id="manage-collaborators" class="window">
+				<div class="popup-header">
+					<div class="popup-header-heading">Manage Collaborators</div>
+					<div class="popup-header-close">
+						<a href="#" class="cancel-button">Close</a>
+					</div>
+				</div>
+				<div class="popup-body">
+					<div class="top-heading">Share <span class="foldername"></span> with your
+						collaborators</div>
+					<div class="add-collaborator">
+						<input type="text" placeholder="Type Email IDs separated by commas"
+							name="adduser-box" id="adduser-box" /> <a class="add-button" href="#">Add
+								User</a>
+					</div>
+					<div class="collaborators-table-container">
+	
+						<table class="collaborators-table">
+							<thead>
+								<tr>
+									<th class="header-col1">Collaborator</th>
+									<th class="header-col2">Email</th>
+									<th class="header-col3">Added</th>
+									<th class="header-col4">Privileges</th>
+									<th class="header-col5"></th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+	
+					</div>
+	
+				</div>
+				<div class="popup-footer">
+					<div class="popup-footer-buttons-left">
+						<a class="previous-button" id="unshare" href="javascript:;">Unshare Folder</a>
+					</div>
+					<div class="popup-footer-buttons">
+						<a class="cancel-button" href="#">Close</a> <a class="finish-button" id="save"
+							href="javascript:;">Save</a>
+					</div>
+				</div>
+			</div>
+			<div id="previous-version" class="window">
+				<div class="popup-header">
+					<div class="popup-header-heading">Show Previous Versions</div>
+					<div class="popup-header-close">
+						<a href="#" class="cancel-button">Close</a>
+					</div>
+				</div>
+				<div class="popup-body">
+					<div class="top-heading"><span class="filename"></span></div>
+					<div class="previous-version-table-container">
+	
+						<table class="previous-version-table">
+							<thead>
+								<tr>
+									<th class="header-col1">Date Modified</th>
+									<th class="header-col2">User</th>
+									<th class="header-col3">Size</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+	
+					</div>
+	
+				</div>
+				<div class="popup-footer">
+					<div class="popup-footer-buttons">
+						<a class="cancel-button" href="#">Close</a> <a class="finish-button download-version"
+							href="javascript:;">Download</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- End of Login Dialog -->
+		</div>
+		<div id="mask"></div>
+	
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+<div xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:py="http://genshi.edgewall.org/" py:strip="True" >
+    <div style="height:530px;overflow:auto;">
+        <py:for each="thread in threads">
+        <div class="row-fluid" style="border: 1px solid grey;background-color: ${thread['color']};" onclick="gotothread(${thread['id']})">     
+                <div align="left" style="margin-left: 10px;">${thread['description']}</div>
+                <div align="right" style="margin-right: 10px;color: gray;">Updated on ${thread['updated']}</div>
+            </div>
+        </py:for>
+    </div>
+    <form name="goto_selected_form" action="/chat/dashboard" method="POST">
+        <input type="hidden" id="selected" name="selected" value="0"/>
+    </form>
+</div>
+
+

@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8" />
+    <title>Chatter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <!-- The styles -->
+    <link href="../css/bootstrap.css" rel="stylesheet" />
+    <link href="../css/m-buttons.css" rel="stylesheet" />
+    <link href="../css/1.css" rel="stylesheet" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+        min-height: 400px;
+        background-color: #eee;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+      input[type="text"],input[type="password"]{
+        border-radius: 0px;
+      }
+      .brand{
+        color:#fff !important;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          </a>
+          <a class="brand" href="#">Online Chating Simplified</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div id="loginContainer" class="row-fluid" style="border:1px solid;margin:0 auto;height:200px;width:315px;padding:15px;margin-top:100px;background-color:#fff;box-shadow:5px 5px 5px #888;">
+        ${error}
+        <form name="login_form" action="do_login" method="POST">
+          Username<br />
+            <input name="username" type="text" placeholder="Username" class="width300"/><br />
+            Password<br />
+            <input name="password" type="password" placeholder="Password" class="width300"/><br />
+            <input type="submit" class="m-btn mtm" value="Login" /><br />
+            <div class="mtl"><a href="#" data-target="signupContainer" class="screenChanger">Create account</a></div>
+        </form>
+      </div><!--/row-->
+      <div id="signupContainer" class="row-fluid hide" style="border:1px solid;margin:0 auto;height:240px;width:315px;padding:15px;margin-top:100px;background-color:#fff;box-shadow:5px 5px 5px #888;">
+          ${error}
+          <form name="signup_form" action="/user/signup" method="POST">
+              Username<br />
+              <input name="username" type="text" placeholder="Username" class="width300"/><br />
+              Password<br />
+              <input name="password" type="password" placeholder="Password" class="width300"/><br />
+              Confirm Password<br />
+              <input name="cpassword" type="password" placeholder="Password" class="width300"/><br />
+              <input type="submit" class="m-btn mtm" value="Signup" /><br />
+              <div class="mtl"><a href="#" data-target="loginContainer" class="screenChanger">Login</a></div>
+          </form>
+      </div>
+      <div class="row-fluid hide">
+        <div class="error"></div>
+        <form name="signup_form" action="/user/signup" method="POST">
+            <input name="email" type="text" placeholder="Email ID" /><br />
+            <input name="Company name" type="text" placeholder="Company name" /><br />
+            <input type="submit" class="btn btn-primary" value="Sign up" />
+        </form>
+      </div><!--/row-->
+      <footer class="hide">
+        <p> OTS Soft 2012</p>
+      </footer>
+    </div><!--/.fluid-container-->
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/js/jquery-1.7.2.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script>
+        $('.screenChanger').click(function(){
+            var source = $(this).closest('.row-fluid').attr('id');
+            var target = $(this).attr('data-target');
+            var speed = 'fast';
+            $("#"+source).slideToggle(speed);
+            $("#"+target).slideToggle(speed);
+            $("#"+target).find('input').slice(0,1).focus();
+            return false;
+        });
+        $("#loginContainer").find('input').slice(0,1).focus();
+    </script>
+</body></html>

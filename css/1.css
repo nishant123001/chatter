@@ -1,0 +1,117 @@
+.floatRight{
+	float:right;
+}
+.floatLeft{
+	float:left;
+}
+.pts{
+	padding-top: 2px;
+}
+.ptm{
+	padding-top: 5px;
+}
+.ptl{
+	padding-top: 10px;
+}
+.prs{
+	padding-right: 2px;
+}
+.prm{
+	padding-right: 5px;
+}
+.prl{
+	padding-right: 10px;
+}
+.pbs{
+	padding-bottom: 2px;
+}
+.pbm{
+	padding-bottom: 5px;
+}
+.pbl{
+	padding-bottom: 10px;
+}
+.pls{
+	padding-left: 2px;
+}
+.plm{
+	padding-left: 5px;
+}
+.pll{
+	padding-left: 10px;
+}
+.mts{
+	margin-top: 2px;
+}
+.mtm{
+	margin-top: 5px;
+}
+.mtl{
+	margin-top: 10px;
+}
+.mrs{
+	margin-right: 2px;
+}
+.mrm{
+	margin-right: 5px;
+}
+.mrl{
+	margin-right: 10px;
+}
+.mbs{
+	margin-bottom: 2px;
+}
+.mbm{
+	margin-bottom: 5px;
+}
+.mbl{
+	margin-bottom: 10px;
+}
+.mls{
+	margin-left: 2px;
+}
+.mlm{
+	margin-left: 5px;
+}
+.mll{
+	margin-left: 10px;
+}
+.pas{
+padding: 2px;
+}
+.pam{
+padding: 5px;
+}
+.pal{
+padding: 10px;
+}
+.mas{
+margin: 2px;
+}
+.mam{
+margin: 5px;
+}
+.mal{
+    margin: 10px;
+}
+.width300{
+	width:300px;
+}
+.m-btn{
+	box-shadow: 1px 1px 5px #666;
+    margin-top: 5px !important;
+}
+#tabs{
+    margin-bottom: 0px;
+}
+.m-btn.big{
+    height:42px;
+    padding:5px 26px;
+    margin-left:26px !important;
+    margin-right:20px;
+    margin-top:20px !important;
+    width:170px;
+}
+.error{
+    border-color:red !important;
+}
